@@ -13,6 +13,7 @@ namespace Application.Activities
     {
         public class Command : IRequest
         {
+            
             public Guid Id { get; set; }
             public string Title { get; set; }
             public string Description { get; set; }
@@ -33,7 +34,6 @@ namespace Application.Activities
                 RuleFor(x => x.Date).NotEmpty();
                 RuleFor(x => x.City).NotEmpty();
                 RuleFor(x => x.Venue).NotEmpty();
-
             }
         }
 

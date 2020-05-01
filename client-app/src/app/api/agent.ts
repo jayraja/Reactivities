@@ -1,12 +1,12 @@
 import axios, { AxiosResponse } from "axios";
 import { IActivity } from "../models/activity";
 import { history } from "../..";
-import { configure } from "mobx";
 import { toast } from "react-toastify";
 
 axios.defaults.baseURL = "http://localhost:5000/api";
 
 axios.interceptors.response.use(undefined, (error) => {
+
   if (error.message === "Network Error" && !error.response) {
     toast.error("Network error - make sure API is running!");
   }
@@ -26,6 +26,8 @@ axios.interceptors.response.use(undefined, (error) => {
   if (status === 500) {
     toast.error("Server Error - check the terminal for more information!");
   }
+
+  throw error;
 });
 
 const responseBody = (response: AxiosResponse) => response.data;
@@ -47,9 +49,8 @@ const requests = {
 const Activities = {
   list: (): Promise<IActivity[]> => requests.get("/activities"),
   details: (id: string) => requests.get(`/activities/${id}`),
-  create: (activity: IActivity) => requests.post("/activities", activity),
-  update: (activity: IActivity) =>
-    requests.put(`/activities/${activity.id}`, activity),
+  create: (activity: IActivity) => requests.post('/activities', activity),
+  update: (activity: IActivity) => requests.put(`/activities/${activity.id}`, activity),
   delete: (id: string) => requests.del(`/activities/${id}`),
 };
 
